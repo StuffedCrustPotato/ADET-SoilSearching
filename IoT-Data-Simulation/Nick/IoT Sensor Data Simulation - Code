@@ -1,0 +1,49 @@
+import random
+import time
+import pandas as pd
+
+def simulate_air_quality():
+    return {
+        "CO2 (ppm)": round(random.uniform(400, 1000), 2),
+        "PM2.5 (µg/m³)": round(random.uniform(5, 50), 2)
+    }
+
+def simulate_temp_humidity():
+    return {
+        "Temperature (°C)": round(random.uniform(15, 40), 2),
+        "Humidity (%)": round(random.uniform(30, 90), 2)
+    }
+
+def simulate_soil_moisture():
+    return {
+        "Soil Moisture (%)": round(random.uniform(10, 80), 2)
+    }
+
+def simulate_water_quality():
+    return {
+        "pH": round(random.uniform(6.5, 8.5), 2),
+        "Turbidity (NTU)": round(random.uniform(0, 10), 2),
+        "Contamination (ppm)": round(random.uniform(0, 50), 2)
+    }
+
+def generate_sensor_data():
+    data = {}
+    data.update(simulate_air_quality())
+    data.update(simulate_temp_humidity())
+    data.update(simulate_soil_moisture())
+    data.update(simulate_water_quality())
+    return data
+
+# Simulate data every few seconds and save to DataFrame
+data_log = []
+
+for i in range(10):  # Simulate 10 data points
+    sensor_data = generate_sensor_data()
+    sensor_data["Timestamp"] = pd.Timestamp.now()
+    data_log.append(sensor_data)
+    print(sensor_data)
+    time.sleep(1)  # Delay for 1 second between readings
+
+# Convert to DataFrame for further analysis or saving
+df = pd.DataFrame(data_log)
+df.to_csv("simulated_environmental_data.csv", index=False)
